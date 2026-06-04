@@ -8,74 +8,112 @@
   <style>
     :root {
       --accent: #7b5eff;
-      --bg: #0a0a0f;
-      --sidebar: #111118;
-      --card: #1a1a27;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(135deg, #0a0a14 0%, #1a0033 100%);
       color: #e0e0ff;
       height: 100vh;
       overflow: hidden;
-      display: flex;
+      transition: all 0.4s ease;
     }
+
+    /* Login Screen */
+    #login-screen {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 10, 20, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.6s ease;
+    }
+    .login-box {
+      background: rgba(26, 26, 42, 0.95);
+      padding: 50px 40px;
+      border-radius: 20px;
+      width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(123, 94, 255, 0.25);
+      transition: transform 0.4s ease;
+    }
+    .login-box:hover {
+      transform: translateY(-5px);
+    }
+    input {
+      width: 100%;
+      padding: 16px;
+      margin: 12px 0;
+      background: #2a2a4a;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+      background: #33335a;
+      box-shadow: 0 0 0 3px rgba(123, 94, 255, 0.3);
+    }
+    button {
+      width: 100%;
+      padding: 16px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .login-btn { background: var(--accent); }
+    .login-btn:hover { background: #9b7fff; transform: scale(1.03); }
 
     /* Sidebar */
     .sidebar {
       width: 280px;
-      background: var(--sidebar);
-      border-right: 1px solid #22222f;
+      background: rgba(17, 17, 24, 0.95);
+      border-right: 1px solid #33334a;
+      padding: 20px;
       display: flex;
       flex-direction: column;
+      transition: all 0.4s ease;
     }
     .logo {
-      padding: 20px;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
       color: var(--accent);
-      border-bottom: 1px solid #22222f;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      padding: 10px 0;
+      margin-bottom: 25px;
     }
     .new-chat {
-      margin: 20px;
-      padding: 14px;
+      padding: 16px;
       background: transparent;
       border: 2px solid var(--accent);
       color: white;
-      border-radius: 12px;
+      border-radius: 14px;
       text-align: center;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
     .new-chat:hover {
       background: var(--accent);
-      color: white;
+      transform: translateY(-3px);
     }
 
-    .sidebar-section {
-      padding: 0 20px;
-      margin-top: 15px;
-    }
-    .section-title {
-      font-size: 13px;
-      color: #777;
-      margin-bottom: 8px;
-      padding-left: 8px;
-    }
     .history-item {
-      padding: 12px 16px;
-      border-radius: 10px;
-      margin-bottom: 4px;
+      padding: 14px 18px;
+      margin: 6px 0;
+      border-radius: 12px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.3s ease;
     }
-    .history-item:hover, .history-item.active {
-      background: #1f1f2e;
+    .history-item:hover {
+      background: #2a2a4a;
+      transform: translateX(6px);
     }
 
     /* Main Area */
@@ -85,26 +123,13 @@
       flex-direction: column;
     }
     header {
-      height: 72px;
-      background: #111118;
-      border-bottom: 1px solid #22222f;
+      height: 75px;
+      background: rgba(17, 17, 24, 0.9);
+      border-bottom: 1px solid #33334a;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 30px;
-      z-index: 10;
-    }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .model-selector {
-      background: #1f1f2e;
-      padding: 8px 16px;
-      border-radius: 9999px;
-      font-size: 14px;
-      cursor: pointer;
     }
 
     .chat-area {
@@ -113,42 +138,46 @@
       padding: 30px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
-      background: linear-gradient(to bottom, #0a0a0f, #0f0f17);
+      gap: 24px;
+      background: transparent;
     }
     .message {
       max-width: 78%;
-      padding: 16px 20px;
-      border-radius: 20px;
+      padding: 17px 22px;
+      border-radius: 22px;
       line-height: 1.65;
-      font-size: 15.5px;
+      font-size: 15.8px;
+      transition: all 0.3s ease;
     }
     .user {
       align-self: flex-end;
       background: var(--accent);
       color: white;
-      border-bottom-right-radius: 6px;
+      border-bottom-right-radius: 8px;
     }
     .ai {
       align-self: flex-start;
-      background: var(--card);
-      border: 1px solid #33334a;
-      border-bottom-left-radius: 6px;
+      background: rgba(42, 42, 74, 0.8);
+      border: 1px solid #44446a;
+      border-bottom-left-radius: 8px;
     }
 
     .input-area {
-      padding: 20px 30px;
-      background: #111118;
-      border-top: 1px solid #22222f;
+      padding: 22px 30px;
+      background: rgba(17, 17, 24, 0.95);
+      border-top: 1px solid #33334a;
     }
     .input-box {
       display: flex;
       align-items: center;
-      background: #1f1f2e;
+      background: #2a2a4a;
       border-radius: 9999px;
-      padding: 8px 12px;
+      padding: 10px;
       gap: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    .input-box:focus-within {
+      box-shadow: 0 0 0 4px rgba(123, 94, 255, 0.3);
     }
     #userInput {
       flex: 1;
@@ -157,108 +186,76 @@
       outline: none;
       color: white;
       font-size: 16.5px;
-      padding: 12px 8px;
+      padding: 12px;
     }
-    button {
-      background: var(--accent);
-      border: none;
-      color: white;
-      padding: 12px 26px;
-      border-radius: 9999px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .attach-btn {
-      background: none;
-      font-size: 24px;
-      color: #aaa;
-      padding: 8px 12px;
-    }
-
-    /* Bottom Bar */
-    .bottom-bar {
-      padding: 8px 30px;
-      background: #0a0a0f;
-      font-size: 13px;
-      color: #666;
-      text-align: center;
-      border-top: 1px solid #222;
-    }
-
-    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">
-      <i class="fas fa-bolt"></i> Hacks Maker AI
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <div class="login-box">
+      <h1 style="margin-bottom: 10px;">Hacks Maker AI</h1>
+      <p style="color:#aaa; margin-bottom: 30px;">Welcome back, Creator</p>
+      
+      <input type="text" id="username" value="Hacks Maker" placeholder="Username">
+      <input type="password" id="password" placeholder="Password (optional)">
+      
+      <button class="login-btn" onclick="login()">Sign In</button>
+      <button onclick="signup()" style="background:#3a3a5a;">Create New Account</button>
     </div>
-    
-    <div class="new-chat" onclick="newChat()">
-      <i class="fas fa-plus"></i> New Conversation
-    </div>
+  </div>
 
-    <div class="sidebar-section">
-      <div class="section-title">Recent Chats</div>
+  <!-- Main App -->
+  <div id="main-app" class="hidden" style="display: flex; width: 100%; height: 100%;">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="logo"><i class="fas fa-bolt"></i> Hacks Maker AI</div>
+      <div class="new-chat" onclick="newChat()">+ New Conversation</div>
+      
+      <div style="margin-top: 20px; color: #777; font-size: 13px; padding: 0 10px;">Recent</div>
       <div id="history-list"></div>
     </div>
 
-    <div style="margin-top: auto; padding: 20px; font-size: 13px; color: #555;">
-      <div onclick="toggleSettings()" style="cursor:pointer; padding:8px 0;">
-        <i class="fas fa-cog"></i> Settings
-      </div>
-      <div>Made for <strong>Hacks Maker</strong></div>
-    </div>
-  </div>
+    <!-- Chat Area -->
+    <div class="main">
+      <header>
+        <div><strong>Hacks Maker's Personal AI</strong></div>
+        <div style="color:#888;">Unlimited • No Cooldown</div>
+      </header>
 
-  <!-- Main Content -->
-  <div class="main">
-    <header>
-      <div class="header-left">
-        <i class="fas fa-robot" style="font-size:24px; color:var(--accent);"></i>
-        <div>
-          <strong>Hacks Maker's AI</strong><br>
-          <small style="color:#777;">Unlimited Mode • No Cooldown</small>
+      <div class="chat-area" id="chat"></div>
+
+      <div class="input-area">
+        <div class="input-box">
+          <button onclick="document.getElementById('fileInput').click()" style="background:none; font-size:26px; color:#aaa;">📎</button>
+          <input type="text" id="userInput" placeholder="Ask me anything..." 
+                 onkeypress="if(event.key === 'Enter') sendMessage()">
+          <button onclick="sendMessage()">Send</button>
         </div>
       </div>
-      <div class="model-selector" onclick="fakeModelClick()">
-        <i class="fas fa-brain"></i> Grok-Inspired-v2
-      </div>
-    </header>
-
-    <div class="chat-area" id="chat"></div>
-
-    <div class="input-area">
-      <div class="input-box">
-        <button class="attach-btn" onclick="document.getElementById('fileInput').click()">📎</button>
-        <input type="text" id="userInput" placeholder="Ask me anything, Hacks Maker..." 
-               onkeypress="if(event.key === 'Enter') sendMessage()">
-        <button onclick="sendMessage()">Send</button>
-      </div>
-      <input type="file" id="fileInput" style="display:none;" onchange="handleFile(this)">
-    </div>
-
-    <div class="bottom-bar">
-      Hacks Maker AI • Personal Edition • Built with ❤️ for the Creator
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settings-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:100; display:flex; align-items:center; justify-content:center;">
-    <div style="background:#1a1a27; padding:30px; border-radius:16px; width:420px;">
-      <h2>Settings</h2>
-      <p><strong>Username:</strong> Hacks Maker</p>
-      <p><strong>Model:</strong> Unlimited Mode</p>
-      <p><strong>Cooldown:</strong> Disabled</p>
-      <button onclick="toggleSettings()" style="width:100%; margin-top:20px; padding:14px;">Close</button>
-    </div>
-  </div>
+  <input type="file" id="fileInput" style="display:none;" onchange="handleFile(this)">
 
   <script>
-    let currentChatId = 1;
-    let chatHistories = {};
+    let currentUser = "Hacks Maker";
+
+    function login() {
+      currentUser = document.getElementById("username").value || "Hacks Maker";
+      document.getElementById("login-screen").style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById("login-screen").classList.add("hidden");
+        document.getElementById("main-app").classList.remove("hidden");
+        startChat();
+      }, 600);
+    }
+
+    function signup() {
+      alert("Account created successfully!\nWelcome, Hacks Maker!");
+      login();
+    }
 
     function addMessage(text, sender) {
       const chat = document.getElementById('chat');
@@ -270,8 +267,8 @@
     }
 
     function handleFile(input) {
-      if (input.files.length > 0) {
-        addMessage(`📎 <strong>File attached:</strong> ${input.files[0].name}`, 'user');
+      if (input.files.length) {
+        addMessage(`📎 Attached: <strong>${input.files[0].name}</strong>`, 'user');
       }
     }
 
@@ -283,62 +280,50 @@
       addMessage(text, 'user');
       input.value = '';
 
-      // Thinking animation
-      const loadingMsg = document.createElement('div');
-      loadingMsg.className = 'message ai';
-      loadingMsg.textContent = 'Thinking';
-      document.getElementById('chat').appendChild(loadingMsg);
+      // Thinking
+      const thinking = document.createElement('div');
+      thinking.className = 'message ai';
+      thinking.textContent = 'Thinking...';
+      document.getElementById('chat').appendChild(thinking);
 
-      let dots = 0;
-      const interval = setInterval(() => {
-        dots = (dots + 1) % 4;
-        loadingMsg.textContent = 'Thinking' + '.'.repeat(dots);
-      }, 300);
+      await new Promise(r => setTimeout(r, 800));
+      thinking.remove();
 
-      await new Promise(r => setTimeout(r, 1200));
-      clearInterval(interval);
-      loadingMsg.remove();
-
-      let reply = "That's a great question, Hacks Maker.";
+      let reply = "Got it. What else would you like to explore?";
 
       const lower = text.toLowerCase();
-      if (lower.includes("hi") || lower.includes("hello")) reply = "Hello Hacks Maker! What are we building today? 🔥";
-      else if (lower.includes("how are you")) reply = "I'm doing excellent and running at full capacity for you.";
-      else if (lower.includes("who made you")) reply = "You did. I'm your personal AI.";
-      else if (lower.includes("thank")) reply = "Always happy to help you, Creator.";
+
+      // Better response logic
+      if (lower.includes("hi") || lower.includes("hello")) {
+        reply = `Hello ${currentUser}! How can I help you today?`;
+      } 
+      else if (lower.includes("how are you")) {
+        reply = "I'm doing great, thanks for asking! Ready to assist you.";
+      } 
+      else if (lower.includes("who created") || lower.includes("your creator") || lower.includes("who made you")) {
+        reply = `<strong>You did.</strong> You are Hacks Maker — my creator.`;
+      } 
+      else if (lower.includes("thank")) {
+        reply = "You're welcome, Hacks Maker ❤️";
+      }
 
       addMessage(reply, 'ai');
     }
 
     function newChat() {
       document.getElementById('chat').innerHTML = '';
-      currentChatId++;
-      addMessage(`<strong>New conversation started.</strong><br>How can I assist you today, Hacks Maker?`, 'ai');
-      updateHistory();
+      addMessage("New chat started.<br>How can I help you today?", 'ai');
     }
 
-    function updateHistory() {
-      const container = document.getElementById('history-list');
-      container.innerHTML = `
-        <div class="history-item active">Project Brainstorm #${currentChatId}</div>
-        <div class="history-item">Code Review Session</div>
-        <div class="history-item">Idea Generation</div>
-      `;
+    function startChat() {
+      document.getElementById('chat').innerHTML = '';
+      addMessage(`Welcome back, <strong>${currentUser}</strong>!<br>I'm your personal unlimited AI assistant.<br>What would you like to create or discuss today?`, 'ai');
     }
 
-    function fakeModelClick() {
-      alert("Model changed to: Hacks Maker Ultra (Unlimited)");
-    }
-
-    function toggleSettings() {
-      const modal = document.getElementById('settings-modal');
-      modal.classList.toggle('hidden');
-    }
-
-    // Initialize
+    // Auto focus
     window.onload = () => {
-      addMessage(`<strong>Welcome back, Hacks Maker.</strong><br>I'm your personal unlimited AI assistant.<br>No limits. No cooldown.<br>What would you like to create today?`, 'ai');
-      updateHistory();
+      // You can remove this if you want to force login every time
+      // login();
     };
   </script>
 </body>
